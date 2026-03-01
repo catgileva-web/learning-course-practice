@@ -5,7 +5,8 @@
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "build:theme": "tsup"
+    "build:theme": "tsup",
+    "sync:figma": "node scripts/sync-figma-tokens.mjs"
   },
   "keywords": [],
   "author": "",

@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build:theme": "cd Storybook && npm run build:theme",
+    "build:theme": "cd Storybook && npm run build:theme && mv theme-build/index.d.mts theme-build/index.d.ts 2>/dev/null; true",
     "deliver:theme": "rm -rf Demo_project/src/theme && cp -r Storybook/theme-build Demo_project/src/theme",
     "pipeline": "npm run build:theme && npm run deliver:theme",
+    "sync:figma": "cd Storybook && npm run sync:figma",
     "storybook": "cd Storybook && npm run storybook",
     "dev": "cd Demo_project && npm run dev"
   }
