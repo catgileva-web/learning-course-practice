@@ -1,0 +1,74 @@
+<document index="70">
+<source>Compiler support.md</source>
+<document_content>
+Compiler support
+
+React
+Vue
+Angular
+Web Components
+More
+Javascript compilers are essential in optimizing and transforming code, enhancing performance, and ensuring compatibility across different environments. Storybook provides support for the leading compilers, ensuring lightning-fast build time and execution with SWC or leveraging Babel with its extensive ecosystem of plugins and presets to allow you to use the latest features of the ecosystem with minimal configuration required for your Webpack-based project.
+
+SWC
+
+SWC is a fast, highly extensible tool for compiling and bundling modern JavaScript applications. Powered by Rust, it improves performance and reduces build times. Storybook includes a built-in integration with SWC, allowing zero-configuration setup and built-in types for APIs. If you've initialized Storybook in a Webpack-based project with any of the supported frameworks, except Angular, Create React App, Ember.js and Next.js, it will automatically use SWC as its default, providing you with faster loading time.
+
+ℹ️
+Support for the SWC builder is currently experimental for Next.js projects, and it's not enabled by default. It requires you to opt in to use it. For more information on configuring SWC with the supported frameworks, see the SWC API documentation.
+Babel
+
+Babel is a widely adopted JavaScript compiler providing a modular architecture and extensive plugin system to support a wide range of use cases, enabling access to the cutting-edge features of the tooling ecosystem. Storybook provides a seamless integration with Babel, allowing you to share a standard setup between your project and Storybook without any additional configuration.
+
+ℹ️
+If you're not using Storybook 7, please reference the previous documentation for guidance on configuring your Babel setup.
+Configure
+
+By default, Babel provides an opinionated configuration that works for most projects, relying on two distinct methods for configuring projects with the tool:
+
+Project-wide configuration: Babel will look for a babel.config.js or equivalent file in the root of your project and use it to configure your project's Babel setup.
+File-relative configuration: Babel will look for a .babelrc.json or equivalent file, introspecting the project structure until it finds a configuration file. This will allow you to configure Babel individually for multiple aspects of your project.
+Storybook relies on an agnostic approach to configuring Babel, enabling you to provide the necessary configuration for your project, and it will use it. Based on the supported frameworks, builders, and addons, it may include minor adjustments to ensure compatibility with Storybook's features.
+
+ℹ️
+For custom project configurations such as monorepos, where you have multiple Storybook configurations, creating a .babelrc.json file in your project's current working directory may not be sufficient. In those cases, you can create a babel.config.js file to override Babel's configuration, and Storybook will automatically detect and use it. See the Babel documentation for more information.
+Working with Create React App
+
+If you're working with a project that was initialized with Create React App, Storybook will automatically detect and use the Babel configuration provided by the tool enabled via the @storybook/preset-create-react-app preset, allowing to use Storybook without any additional configuration.
+
+Troubleshooting
+
+The SWC compiler doesn't work with React
+
+If you have enabled the SWC builder option in a React-based project and you are not explicitly importing React in your jsx|tsx files, it can cause Storybook to fail to load. SWC does not automatically import the jsx-runtime module when using the SWC builder. To resolve this issue, you need to adjust your Storybook configuration file (i.e., .storybook/main.js|ts) and configure the swc option as follows:
+
+.storybook/main.ts
+Typescript
+// Replace your-framework with the webpack-based framework you are using (e.g., react-webpack5)
+import type { StorybookConfig } from '@storybook/your-framework';
+ 
+const config: StorybookConfig = {
+  framework: {
+    name: '@storybook/your-framework',
+    options: {},
+  },
+  swc: (config, options) => ({
+    jsc: {
+      transform: {
+        react: {
+          runtime: 'automatic',
+        },
+      },
+    },
+  }),
+};
+ 
+export default config;
+Babel configuration not working
+
+Out of the box, Storybook can detect and apply any Babel configuration you provided in your project. However, if you're running into a situation where your configuration is not being used, you configure the BABEL_SHOW_CONFIG_FOR environment variable and set it to the file you want to inspect. For example:
+
+BABEL_SHOW_CONFIG_FOR=.storybook/preview.js yarn storybook
+When the command runs, it will output the Babel configuration applied to the file you specified despite showing a transpilation error in the console and preventing Storybook from loading. This is a known issue with Babel unrelated to Storybook, which you address by turning off the environment variable after inspecting the configuration and restarting Storybook.
+</document_content>
+</document>

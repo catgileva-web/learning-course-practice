@@ -1,0 +1,44 @@
+<document index="52">
+<source>Measure & outline.md</source>
+<document_content>
+Measure & outline
+
+React
+Vue
+Angular
+Web Components
+More
+Watch a video tutorial
+Storybook's Measure and Outline addons give you the necessary tooling to inspect and visually debug CSS layout and alignment issues within your stories. It makes it easy to catch UI bugs early in development.
+
+Measure addon
+
+While working with composite components or page layouts, dealing with whitespace (i.e., margin,padding,border) and individual component measurements can be pretty troublesome. It would require that you open up the browser's development tools and manually inspect the DOM tree for issues and UI bugs.
+
+With Storybook's Measure addon, you can quickly visualize each component's measurements through a click of a button in Storybook's toolbar.
+
+
+💡
+Alternatively you can press the m key on your keyboard to toggle the addon.
+Outline addon
+
+When building your layouts, checking the visual alignment of all components can be pretty complicated, even more, if your components are spread apart or contain unique shapes.
+
+With Storybook's Outline addon, you can toggle the outlines associated with all your UI elements, allowing you to spot bugs and broken layouts instantly with a click of a button.
+
+
+API
+
+Parameters
+
+This addon contributes the following parameters to Storybook, under the measure or outline namespace:
+
+disable
+
+Type: boolean
+
+Disable this addon's behavior. If you wish to disable this addon for the entire Storybook, you should do so when registering addon-essentials. See the essential addon's docs for more information.
+
+This parameter is most useful to allow overriding at more specific levels. For example, if this parameter is set to true at the project level, it could then be re-enabled by setting it to false at the meta (component) or story level.
+</document_content>
+</document>
