@@ -8,6 +8,12 @@
     "pipeline": "npm run build:theme && npm run deliver:theme",
     "sync:figma": "cd Storybook && npm run sync:figma",
     "storybook": "cd Storybook && npm run storybook",
-    "dev": "cd Demo_project && npm run dev"
+    "dev": "cd Demo_project && npm run dev",
+    "test": "npx playwright test e2e/form-flow.spec.ts",
+    "demo": "npx playwright test e2e/form-demo.spec.ts",
+    "demo:trace": "npx playwright test e2e/form-flow.spec.ts && npx playwright show-trace test-results/*/trace.zip"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2"
   }
 }
