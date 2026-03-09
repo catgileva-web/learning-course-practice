@@ -1,41 +1,43 @@
-# Demo6 — Storybook Theme Pipeline
+# Storybook Theme Pipeline — Bootstrap + React
 
-Demo for a lecture: design team maintains a theme in Storybook, builds it, and delivers to a product project.
+Demo for a lecture: design team maintains a Bootstrap theme in Storybook, builds it, and delivers to a product project.
 
 ## Project Structure
 
 Monorepo with two sub-projects:
-- `Storybook/` — theme source + Storybook stories (MUI 7, Storybook 8, Vite 6)
-- `Demo_project/` — React app consuming the built theme (MUI 7, Vite 7, React Router 7)
+- `Storybook/` — Bootstrap theme source + Storybook stories (Bootstrap 5, react-bootstrap, Storybook 8, Vite 6)
+- `Demo_project/` — React app consuming the Bootstrap theme (Bootstrap 5, react-bootstrap, Vite 7, React Router 7)
 
-Theme source: `Storybook/src/theme/` (palette.ts, typography.ts, components/*.ts, index.ts)
-Theme build output: `Storybook/theme-build/`
-Theme destination: `Demo_project/src/theme/` (overwritten by pipeline)
+Theme source: `Storybook/src/theme-bootstrap/custom.scss` (SCSS variable overrides)
+Theme in Demo_project: `Demo_project/src/theme/custom.scss` (same SCSS, copied from Storybook)
 
 ## Key Commands (run from root)
 
-- `npm run build:theme` — build theme via tsup → `Storybook/theme-build/`
-- `npm run deliver:theme` — copy built theme into Demo_project
-- `npm run pipeline` — build + deliver in one step
 - `npm run storybook` — launch Storybook on :6006
 - `npm run dev` — launch Demo_project on :5173
 
 ## Architecture Decisions
 
-- All color tokens live in `Storybook/src/theme/palette.ts` — single source of truth
-- tsup builds ESM with `.js`/`.d.ts` extensions (outExtension configured explicitly)
-- `@mui/material`, `@mui/material/styles`, `@emotion/*` are tsup externals — must be installed in Demo_project
-- Component overrides: one file per component in `Storybook/src/theme/components/`
+- All design tokens live in SCSS variable overrides (`custom.scss`) — single source of truth
+- Bootstrap 5 Sass customization: override variables before importing Bootstrap modules
+- Import order per Bootstrap docs: functions → variables → maps/mixins/root → utilities → components → utilities/api
+- `react-bootstrap` wraps Bootstrap components as React components
 - No tests — this is a demo project
 
 ## Gotchas
 
-- `Demo_project/src/theme/` is auto-generated — do NOT edit directly, edit `Storybook/src/theme/` and run pipeline
-- MUI versions must match between Storybook and Demo_project (both use @mui/material ^7.3.8)
-- tsup may output `.mjs`/`.d.mts` without the explicit `outExtension` config in tsup.config.ts
-- `skipLibCheck: true` needed in both tsconfigs for the copied theme types to work
+- Keep `custom.scss` in sync between Storybook and Demo_project
+- When adding new Bootstrap components, add the corresponding `@import` to `custom.scss`
+- `text-muted` is deprecated — use `text-body-secondary` instead
+- Always use `controlId` on `Form.Group` for accessibility
 
-## Sub-project CLAUDE.md files
+## Documentation
 
-- `agents/orchestrator/CLAUDE.md` — orchestrator agent instructions
-- `docs/mui_docs/CLAUDE.md` — local MUI docs usage
+Local docs available in `docs/`:
+- `docs/bootstrap_docs/` — Bootstrap 5 official docs (MDX)
+- `docs/angular_docs/` — Angular official docs (MD)
+- `docs/mui_docs/` — MUI docs (kept for reference from lesson 4)
+
+## Sub-project files
+
+- `.claude/agents/mui-docs-expert.md` — docs verification agent (supports MUI, Bootstrap, Angular)
