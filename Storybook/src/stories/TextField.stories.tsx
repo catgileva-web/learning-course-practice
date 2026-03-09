@@ -1,46 +1,66 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { TextField, Stack, Button } from '@mui/material';
+import { Form, Button } from 'react-bootstrap';
 
-const meta: Meta<typeof TextField> = {
-  title: 'Components/TextField',
-  component: TextField,
+const meta: Meta = {
+  title: 'Components/Form',
 };
 
 export default meta;
-type Story = StoryObj<typeof TextField>;
+type Story = StoryObj;
 
 export const Default: Story = {
-  args: {
-    label: 'Label',
-    placeholder: 'Enter text...',
-  },
+  render: () => (
+    <Form.Group controlId="defaultText">
+      <Form.Label>Label</Form.Label>
+      <Form.Control type="text" placeholder="Enter text..." />
+    </Form.Group>
+  ),
 };
 
 export const WithHelperText: Story = {
-  args: {
-    label: 'Email',
-    placeholder: 'you@example.com',
-    helperText: 'We will never share your email',
-  },
+  render: () => (
+    <Form.Group controlId="emailHelper">
+      <Form.Label>Email</Form.Label>
+      <Form.Control type="email" placeholder="you@example.com" aria-describedby="emailHelperText" />
+      <Form.Text id="emailHelperText" className="text-body-secondary">
+        We will never share your email
+      </Form.Text>
+    </Form.Group>
+  ),
 };
 
 export const ErrorState: Story = {
-  args: {
-    label: 'Email',
-    value: 'invalid-email',
-    error: true,
-    helperText: 'Please enter a valid email address',
-  },
+  render: () => (
+    <Form.Group controlId="emailError">
+      <Form.Label>Email</Form.Label>
+      <Form.Control type="email" value="invalid-email" isInvalid />
+      <Form.Control.Feedback type="invalid">
+        Please enter a valid email address
+      </Form.Control.Feedback>
+    </Form.Group>
+  ),
 };
 
 export const FormExample: Story = {
   render: () => (
-    <Stack spacing={2} sx={{ maxWidth: 400 }}>
-      <TextField label="First Name" placeholder="John" />
-      <TextField label="Last Name" placeholder="Doe" />
-      <TextField label="Email" placeholder="john@example.com" type="email" />
-      <TextField label="Password" type="password" />
-      <Button variant="contained" size="large">Submit</Button>
-    </Stack>
+    <Form style={{ maxWidth: 400 }} className="d-flex flex-column gap-3">
+      <Form.Group controlId="firstName">
+        <Form.Label>First Name</Form.Label>
+        <Form.Control type="text" placeholder="John" />
+      </Form.Group>
+      <Form.Group controlId="lastName">
+        <Form.Label>Last Name</Form.Label>
+        <Form.Control type="text" placeholder="Doe" />
+      </Form.Group>
+      <Form.Group controlId="email">
+        <Form.Label>Email</Form.Label>
+        <Form.Control type="email" placeholder="john@example.com" />
+      </Form.Group>
+      <Form.Group controlId="password">
+        <Form.Label>Password</Form.Label>
+        <Form.Control type="password" />
+      </Form.Group>
+      <Button variant="primary" size="lg" type="submit">Submit</Button>
+    </Form>
   ),
 };

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button, Stack } from '@mui/material';
+import { Button } from 'react-bootstrap';
 
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
@@ -7,15 +7,11 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['contained', 'outlined', 'text'],
-    },
-    color: {
-      control: 'select',
-      options: ['primary', 'secondary'],
+      options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'outline-primary', 'outline-secondary'],
     },
     size: {
       control: 'select',
-      options: ['small', 'medium', 'large'],
+      options: ['sm', 'lg'],
     },
   },
 };
@@ -23,58 +19,47 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-export const Contained: Story = {
-  args: {
-    variant: 'contained',
-    children: 'Contained Button',
-  },
-};
-
-export const Outlined: Story = {
-  args: {
-    variant: 'outlined',
-    children: 'Outlined Button',
-  },
-};
-
-export const Text: Story = {
-  args: {
-    variant: 'text',
-    children: 'Text Button',
-  },
-};
-
 export const Primary: Story = {
   args: {
-    variant: 'contained',
-    color: 'primary',
-    children: 'Primary',
+    variant: 'primary',
+    children: 'Primary Button',
   },
 };
 
 export const Secondary: Story = {
   args: {
-    variant: 'contained',
-    color: 'secondary',
-    children: 'Secondary',
+    variant: 'secondary',
+    children: 'Secondary Button',
+  },
+};
+
+export const OutlinePrimary: Story = {
+  args: {
+    variant: 'outline-primary',
+    children: 'Outline Primary',
   },
 };
 
 export const AllVariants: Story = {
   render: () => (
-    <Stack spacing={3}>
-      <Stack direction="row" spacing={2}>
-        <Button variant="contained" color="primary">Primary</Button>
-        <Button variant="contained" color="secondary">Secondary</Button>
-        <Button variant="outlined" color="primary">Outlined</Button>
-        <Button variant="outlined" color="secondary">Outlined</Button>
-        <Button variant="text" color="primary">Text</Button>
-      </Stack>
-      <Stack direction="row" spacing={2}>
-        <Button variant="contained" size="small">Small</Button>
-        <Button variant="contained" size="medium">Medium</Button>
-        <Button variant="contained" size="large">Large</Button>
-      </Stack>
-    </Stack>
+    <div className="d-flex flex-column gap-3">
+      <div className="d-flex gap-2">
+        <Button variant="primary">Primary</Button>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="success">Success</Button>
+        <Button variant="danger">Danger</Button>
+        <Button variant="warning">Warning</Button>
+        <Button variant="info">Info</Button>
+      </div>
+      <div className="d-flex gap-2">
+        <Button variant="outline-primary">Outline</Button>
+        <Button variant="outline-secondary">Outline</Button>
+      </div>
+      <div className="d-flex gap-2 align-items-center">
+        <Button variant="primary" size="sm">Small</Button>
+        <Button variant="primary">Medium</Button>
+        <Button variant="primary" size="lg">Large</Button>
+      </div>
+    </div>
   ),
 };

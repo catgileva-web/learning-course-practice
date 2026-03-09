@@ -1,63 +1,53 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  Card,
-  CardContent,
-  CardActions,
-  Typography,
-  Button,
-  Box,
-} from '@mui/material';
+import { Card, Button } from 'react-bootstrap';
 
-const meta: Meta<typeof Card> = {
+const meta: Meta = {
   title: 'Components/Card',
-  component: Card,
 };
 
 export default meta;
-type Story = StoryObj<typeof Card>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: () => (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardContent>
-        <Typography variant="h5" gutterBottom>
-          Card Title
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          This is a basic card component styled by the custom theme.
+    <Card style={{ maxWidth: 345 }}>
+      <Card.Body>
+        <Card.Title>Card Title</Card.Title>
+        <Card.Text className="text-body-secondary">
+          This is a basic card component styled by the custom Bootstrap theme.
           It demonstrates border radius, shadow, and typography.
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-        <Button size="small" variant="contained">Action</Button>
-      </CardActions>
+        </Card.Text>
+        <div className="d-flex gap-2">
+          <Button variant="link" size="sm">Learn More</Button>
+          <Button variant="primary" size="sm">Action</Button>
+        </div>
+      </Card.Body>
     </Card>
   ),
 };
 
 export const Dashboard: Story = {
   render: () => (
-    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 2 }}>
+    <div className="row g-3">
       {[
         { title: 'Revenue', value: '$24,500', change: '+12%' },
         { title: 'Users', value: '1,234', change: '+8%' },
         { title: 'Orders', value: '456', change: '+23%' },
       ].map((item) => (
-        <Card key={item.title}>
-          <CardContent>
-            <Typography variant="body2" color="text.secondary">
-              {item.title}
-            </Typography>
-            <Typography variant="h4" sx={{ mt: 1 }}>
-              {item.value}
-            </Typography>
-            <Typography variant="body2" color="primary">
-              {item.change} from last month
-            </Typography>
-          </CardContent>
-        </Card>
+        <div className="col-4" key={item.title}>
+          <Card>
+            <Card.Body>
+              <Card.Text className="text-body-secondary mb-1">
+                {item.title}
+              </Card.Text>
+              <h4 className="mt-1">{item.value}</h4>
+              <Card.Text className="text-primary">
+                {item.change} from last month
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </div>
       ))}
-    </Box>
+    </div>
   ),
 };
