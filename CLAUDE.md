@@ -1,41 +1,63 @@
-# Storybook Theme Pipeline — Bootstrap + Angular
+# Прототип — Angular + Bootstrap
 
-Demo for a lecture: design team maintains a Bootstrap theme in Storybook, delivers to an Angular product project.
+Это интерактивный прототип для дизайнеров. Пользователи этого проекта — дизайнеры, а не разработчики. Они описывают поведение, а ты реализуешь.
 
-## Project Structure
+## Структура проекта
 
-Monorepo with two sub-projects:
-- `Storybook/` — Bootstrap theme source + Storybook stories (Angular 19, Bootstrap 5, Storybook 8)
-- `Demo_project/` — Angular app consuming the Bootstrap theme (Angular 19, Bootstrap 5)
+```
+Storybook/              -- тема и компоненты (не трогать при прототипировании)
+Demo_project/           -- прототип
+  src/app/
+    store/              -- все данные прототипа (стейт)
+      app-state.model.ts   -- типы данных
+      initial-state.ts     -- начальные значения всех переменных
+      app-store.service.ts -- сервис для чтения и изменения данных
+    pages/              -- страницы прототипа
+      dashboard/        -- главная с карточками метрик
+      list/             -- таблица пользователей
+      form/             -- форма добавления пользователя
+    components/
+      debug-panel/      -- панель отладки (открывается по клику на лого)
+    app.routes.ts       -- маршруты
+    app.html            -- навбар и layout
+    app.ts              -- корневой компонент
+```
 
-Theme source: `Storybook/src/theme-bootstrap/custom.scss` (SCSS variable overrides)
-Theme in Demo_project: `Demo_project/src/theme/custom.scss` (same SCSS, kept in sync with Storybook)
+## Как работает стейт
 
-## Key Commands (run from root)
+Все данные прототипа живут в одном месте: `store/app-store.service.ts`. Это замена бэкенда.
 
-- `npm run storybook` — launch Storybook on :6006
-- `npm run dev` — launch Demo_project on :5173
+- Начальные значения — в `store/initial-state.ts`. Это "база данных" прототипа.
+- Любые новые переменные добавляй сюда: сначала тип в `app-state.model.ts`, потом значение в `initial-state.ts`, потом метод в `app-store.service.ts`.
+- Никогда не храни данные только внутри компонента. Все, что влияет на поведение прототипа, должно быть в стейте.
 
-## Architecture Decisions
+## Debug-панель
 
-- All design tokens live in SCSS variable overrides (`custom.scss`) — single source of truth
-- Bootstrap 5 Sass customization: override variables before importing Bootstrap modules
-- Import order per Bootstrap docs: functions → variables → maps/mixins/root → utilities → components → utilities/api
-- Angular standalone components with plain Bootstrap CSS classes in templates
-- No tests — this is a demo project
+Панель открывается по клику на "Demo Project" в навбаре. Она показывает:
+- Вкладка State: все текущие данные в формате JSON
+- Вкладка Edit: можно отредактировать данные вручную и нажать Apply
+- Вкладка Log: история всех изменений
 
-## Gotchas
+Любая новая переменная в стейте автоматически появляется в debug-панели. Дополнительной настройки не нужно.
 
-- Keep `custom.scss` in sync between Storybook and Demo_project
-- When adding new Bootstrap components, add the corresponding `@import` to `custom.scss`
-- `text-muted` is deprecated — use `text-body-secondary` instead
+## Правила при добавлении нового функционала
 
-## Documentation
+1. **Новые страницы** создавай в `Demo_project/src/app/pages/<название>/`. Добавляй маршрут в `app.routes.ts` и ссылку в навбар в `app.html`.
 
-Local docs available in `docs/`:
-- `docs/bootstrap_docs/` — Bootstrap 5 official docs (MDX)
-- `docs/angular_docs/` — Angular official docs (MD)
+2. **Стилизация** — только Bootstrap 5 классы. Не создавай кастомный CSS, не используй inline-стили. Тема лежит в `Demo_project/src/theme/custom.scss`.
 
-## Sub-project files
+3. **Компоненты Angular** — standalone, без NgModule. Используй `inject()` для сервисов, `async` pipe для подписок на Observable.
 
-- `.claude/agents/docs-expert.md` — docs verification agent (supports Bootstrap and Angular)
+4. **Шаблоны** — используй Angular 17+ control flow: `@if`, `@for`, `@switch`. Не используй `*ngIf`, `*ngFor`.
+
+5. **Не трогай** папку `Storybook/`, файлы темы, конфиги сборки, GitHub Actions.
+
+## Команды
+
+- `cd Demo_project && npm start` — запуск прототипа (порт 4200)
+- `cd Demo_project && npm run build` — сборка
+
+## Документация
+
+- `docs/bootstrap_docs/` — документация Bootstrap 5
+- `docs/angular_docs/` — документация Angular
