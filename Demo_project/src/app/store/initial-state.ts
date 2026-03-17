@@ -62,4 +62,5 @@ export const INITIAL_STATE: AppState = {
     conversionChange: 0.4,
   },
   nextUserId: 6,
+  currentUserId: 1,
 };

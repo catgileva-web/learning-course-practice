@@ -13,7 +13,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav me-auto">
         <li class="nav-item">
           <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
         </li>
@@ -24,6 +24,18 @@
           <a class="nav-link" routerLink="/form" routerLinkActive="active">Add User</a>
         </li>
       </ul>
+      <div class="d-flex align-items-center">
+        <label class="text-light me-2 mb-0 small">Logged in as:</label>
+        <select
+          class="form-select form-select-sm"
+          [value]="currentUserId$ | async"
+          (change)="onUserChange($event)"
+        >
+          @for (user of users$ | async; track user.id) {
+            <option [value]="user.id">{{ user.name }} ({{ user.role }})</option>
+          }
+        </select>
+      </div>
     </div>
   </div>
 </nav>

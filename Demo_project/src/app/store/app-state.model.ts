@@ -22,6 +22,7 @@ export interface AppState {
   users: User[];
   dashboard: DashboardStats;
   nextUserId: number;
+  currentUserId: number;
 }
 
 export interface ActionLogEntry {

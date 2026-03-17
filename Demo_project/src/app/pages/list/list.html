@@ -9,7 +9,9 @@
             <th>Email</th>
             <th>Role</th>
             <th>Status</th>
-            <th>Actions</th>
+            @if ((currentUserRole$ | async) !== 'Viewer') {
+              <th>Actions</th>
+            }
           </tr>
         </thead>
         <tbody>
@@ -30,10 +32,14 @@
                   {{ user.status }}
                 </span>
               </td>
-              <td>
-                <button class="btn btn-sm btn-primary me-1" (click)="startEdit(user)">Edit</button>
-                <button class="btn btn-sm btn-danger" (click)="deleteUser(user.id)">Delete</button>
-              </td>
+              @if ((currentUserRole$ | async) !== 'Viewer') {
+                <td>
+                  <button class="btn btn-sm btn-primary me-1" (click)="startEdit(user)">Edit</button>
+                  @if ((currentUserRole$ | async) === 'Admin') {
+                    <button class="btn btn-sm btn-danger" (click)="deleteUser(user.id)">Delete</button>
+                  }
+                </td>
+              }
             </tr>
           }
         </tbody>

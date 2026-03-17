@@ -14,6 +14,7 @@ export class ListComponent {
   private store = inject(AppStoreService);
 
   users$ = this.store.users$;
+  currentUserRole$ = this.store.currentUserRole$;
 
   editingUser: User | null = null;
   editForm = { name: '', email: '', role: '' as User['role'], company: '', phone: '' };

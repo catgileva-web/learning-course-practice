@@ -14,6 +14,13 @@ export class AppStoreService {
 
   users$ = this.state$.pipe(map((s) => s.users));
   dashboard$ = this.state$.pipe(map((s) => s.dashboard));
+  currentUserId$ = this.state$.pipe(map((s) => s.currentUserId));
+  currentUser$ = this.state$.pipe(
+    map((s) => s.users.find((u) => u.id === s.currentUserId) ?? null),
+  );
+  currentUserRole$ = this.currentUser$.pipe(
+    map((u) => u?.role ?? null),
+  );
 
   get snapshot(): AppState {
     return this.stateSubject.getValue();
@@ -72,6 +79,15 @@ export class AppStoreService {
       },
       'TOGGLE_STATUS',
       { id },
+    );
+  }
+
+  setCurrentUser(userId: number) {
+    const state = this.snapshot;
+    this.updateState(
+      { ...state, currentUserId: userId },
+      'SET_CURRENT_USER',
+      { userId },
     );
   }
 
